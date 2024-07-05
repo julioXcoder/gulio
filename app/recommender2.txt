@@ -1,0 +1,58 @@
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  rating: number;
+  price: number;
+}
+
+interface Purchase {
+  productId: number;
+  quantity: number;
+}
+
+function getRecommendedProducts(products: Product[], purchases: Purchase[]): Product[] {
+  // Calculate the total quantity purchased for each category
+  const categoryPurchaseCount: { [category: string]: number } = {};
+  purchases.forEach(purchase => {
+    const product = products.find(p => p.id === purchase.productId);
+    if (product) {
+      if (!categoryPurchaseCount[product.category]) {
+        categoryPurchaseCount[product.category] = 0;
+      }
+      categoryPurchaseCount[product.category] += purchase.quantity;
+    }
+  });
+
+  // Find the most purchased category
+  const mostPurchasedCategory = Object.keys(categoryPurchaseCount).reduce((a, b) => 
+    categoryPurchaseCount[a] > categoryPurchaseCount[b] ? a : b
+  );
+
+  // Filter products based on the most purchased category
+  const filteredProducts = products.filter(product => product.category === mostPurchasedCategory);
+
+  // Sort the filtered products based on rating (highest to lowest)
+  const sortedProducts = filteredProducts.sort((a, b) => b.rating - a.rating);
+
+  // Return the top 10 recommended products
+  return sortedProducts.slice(0, 10);
+}
+
+// Example usage
+const products: Product[] = [
+  { id: 1, name: "Product 1", category: "Electronics", rating: 4.5, price: 299 },
+  { id: 2, name: "Product 2", category: "Electronics", rating: 4.0, price: 199 },
+  { id: 3, name: "Product 3", category: "Books", rating: 4.8, price: 15 },
+  // Add more products here
+];
+
+const purchases: Purchase[] = [
+  { productId: 1, quantity: 2 },
+  { productId: 2, quantity: 1 },
+  { productId: 3, quantity: 5 },
+  // Add more purchases here
+];
+
+const recommendedProducts = getRecommendedProducts(products, purchases);
+console.log(recommendedProducts);

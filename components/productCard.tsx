@@ -1,28 +1,28 @@
-import React from "react";
+import { Heart, ShoppingCart } from "lucide-react";
+import Image from "next/image";
+import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
   CarouselNext,
+  CarouselPrevious,
 } from "./ui/carousel";
-import Image from "next/image";
-
 
 type Image = { src: string; alt: string };
 
 interface Props {
   item: {
+    id: number;
     productTitle: string;
     productPrice: number;
     images: Image[];
   };
+  onProductSelect: (id: number) => void;
 }
 
-
-
-const ProductCard = ({ item }: Props) => {
+const ProductCard = ({ item, onProductSelect }: Props) => {
   return (
     <div className="m-4 cursor-pointer">
       <Carousel className="group relative w-full max-w-xs">
@@ -66,9 +66,20 @@ const ProductCard = ({ item }: Props) => {
         <CarouselPrevious className="absolute left-4 top-1/2 hidden group-hover:flex" />
         <CarouselNext className="absolute right-4 top-1/2 hidden group-hover:flex" />
       </Carousel>
-      <div className="mt-2">
-        <p>{item.productTitle}</p>
-        <p>{item.productPrice}</p>
+      <div className="flex items-center h-10 mt-1 justify-between">
+        <div className="group-hover:hidden">
+          <p>{item.productTitle}</p>
+          <p>{item.productPrice}</p>
+        </div>
+        <div className="group-hover:flex gap-1 items-center hidden">
+          <Button size="icon" variant="outline">
+            <Heart className="size-4 shrink-0 text-red-500" />
+          </Button>
+          <Button size="icon" variant="outline">
+            <ShoppingCart className="size-4 shrink-0" />
+          </Button>
+        </div>
+        <Button onClick={() => onProductSelect(item.id)}>Buy Now!</Button>
       </div>
     </div>
   );

@@ -1,0 +1,50 @@
+// src/App.tsx
+import React, { useState } from "react";
+import { Product } from "./types/Product";
+import CategorySelector from "./components/CategorySelector";
+import AllProducts from "./components/AllProducts";
+import FilteredProducts from "./components/FilteredProducts";
+import { getRecommendedProducts } from "./utils/recommendations";
+
+const App: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  const products: Product[] = [
+    { name: "Apple", category: "Fruits", popularity: 80 },
+    { name: "Carrot", category: "Vegetables", popularity: 50 },
+    { name: "Banana", category: "Fruits", popularity: 75 },
+    { name: "Lettuce", category: "Vegetables", popularity: 60 },
+    // Add more products as needed
+  ];
+
+  const categories = [...new Set(products.map((product) => product.category))];
+
+  const recommendedProducts = getRecommendedProducts(
+    products,
+    selectedCategory
+  );
+
+  const filteredProducts =
+    selectedCategory === "all"
+      ? products
+      : products.filter((product) => product.category === selectedCategory);
+
+  return (
+    <div>
+      <CategorySelector
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+      />
+      {selectedCategory === "all" ? (
+        <AllProducts products={products} />
+      ) : (
+        <FilteredProducts products={filteredProducts} />
+      )}
+      <h2>Recommended Products</h2>
+      <FilteredProducts products={recommendedProducts} />
+    </div>
+  );
+};
+
+export default App;

@@ -16,7 +16,14 @@ import {
   CardHeader,
   CardDescription,
 } from "@/components/ui/card";
-import { MoveLeft, CreditCard, HandCoins, Smartphone } from "lucide-react";
+import {
+  MoveLeft,
+  CreditCard,
+  HandCoins,
+  Smartphone,
+  ShoppingCart,
+  Heart,
+} from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -395,14 +402,12 @@ const Page = () => {
                   {items.map((item, index) => (
                     <CarouselItem key={index} className="basis-[25%] group">
                       <div className="p-1">
-                        <Card className="relative">
-                          <ProductCard key={index} item={item} />
-                          <Button
-                            onClick={() => handleSelectedProduct(item.id)}
-                            className="absolute right-6 bottom-4 hidden group-hover:inline-flex"
-                          >
-                            Buy now!
-                          </Button>
+                        <Card>
+                          <ProductCard
+                            key={index}
+                            item={item}
+                            onProductSelect={handleSelectedProduct}
+                          />
                         </Card>
                       </div>
                     </CarouselItem>

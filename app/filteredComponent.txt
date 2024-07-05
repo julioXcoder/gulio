@@ -1,0 +1,30 @@
+// src/components/FilteredProducts.tsx
+import React, { useState } from 'react';
+import { Product } from '../types/Product';
+import ProductList from './ProductList';
+
+interface FilteredProductsProps {
+  products: Product[];
+}
+
+const FilteredProducts: React.FC<FilteredProductsProps> = ({ products }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div>
+      <input
+        type="text"
+        placeholder="Search products"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <ProductList products={filteredProducts} />
+    </div>
+  );
+};
+
+export default FilteredProducts;

@@ -16,6 +16,49 @@ export const getNumberValueFromEvent = (
   return e.target.value === "" ? "" : Number(e.target.value);
 };
 
+export function getMimeType(fileName: string): string {
+  const extension = fileName.split(".").pop()?.toLowerCase();
+  switch (extension) {
+    case "jpg":
+    case "jpeg":
+      return "image/jpeg";
+    case "png":
+      return "image/png";
+    case "gif":
+      return "image/gif";
+    case "webp":
+      return "image/webp";
+    case "pdf":
+      return "application/pdf";
+    case "ppt":
+    case "pptx":
+      return "application/vnd.ms-powerpoint";
+    case "doc":
+    case "docx":
+      return "application/msword";
+    case "xls":
+    case "xlsx":
+      return "application/vnd.ms-excel";
+    case "txt":
+      return "text/plain";
+    case "csv":
+      return "text/csv";
+    case "zip":
+      return "application/zip";
+    case "rar":
+      return "application/x-rar-compressed";
+    case "mp3":
+      return "audio/mpeg";
+    case "mp4":
+      return "video/mp4";
+    case "mov":
+      return "video/quicktime";
+    // Add more cases as needed
+    default:
+      return "application/octet-stream"; // Fallback MIME type
+  }
+}
+
 export function showErrorToast() {
   return toast.error(ERROR_MESSAGE, {
     duration: 6000,

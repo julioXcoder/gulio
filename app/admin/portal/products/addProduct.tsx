@@ -9,6 +9,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { addNewProduct } from "./actions";
 import { getNumberValueFromEvent, showErrorToast } from "@/lib/utils";
 import AddImage from "./addImage";
 import { productCategoryList, productStatusList, FormSchema } from "./data";
@@ -115,14 +116,14 @@ const AddProduct = () => {
 
     const formData = new FormData();
     formData.append("file", imageFile);
-
-    // const { userRole: _, ...otherData } = data;
-    // const userRole = UserRole[data.userRole as keyof typeof UserRole];
-
-    console.log("The data is", data);
+    images.forEach((image, index) => {
+      if (image.imageFile) {
+        formData.append("images", image.imageFile);
+      }
+    });
 
     try {
-      // await addStaff({ formData, userRole, ...otherData });
+      await addNewProduct({ formData, ...data });
     } catch (error) {
       showErrorToast();
     } finally {
@@ -132,7 +133,7 @@ const AddProduct = () => {
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-6 pr-3">
       <Form {...form}>
         {/* <form onSubmit={form.handleSubmit(onSubmit)}> */}
         <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
@@ -233,7 +234,7 @@ const AddProduct = () => {
                   <div className="grid gap-3">
                     <FormField
                       control={form.control}
-                      name="ProductCategory"
+                      name="productCategory"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>category</FormLabel>
@@ -264,7 +265,7 @@ const AddProduct = () => {
                   <div className="grid gap-3">
                     <FormField
                       control={form.control}
-                      name="ProductStatus"
+                      name="productStatus"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>status</FormLabel>

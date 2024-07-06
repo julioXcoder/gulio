@@ -11,8 +11,8 @@ const FormSchema = z.object({
   }),
   price: z.number().min(0, "Product price should be a positive number"),
   inStock: z.number().min(0, "Product stock should be a positive number"),
-  ProductStatus: z.nativeEnum(ProductStatus),
-  ProductCategory: z.nativeEnum(ProductCategory),
+  productStatus: z.nativeEnum(ProductStatus),
+  productCategory: z.nativeEnum(ProductCategory),
 });
 
 export { FormSchema, productStatusList, productCategoryList };

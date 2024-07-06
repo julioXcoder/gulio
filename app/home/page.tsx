@@ -1,4 +1,4 @@
-import ProductCard from "@/components/productCard";
+import ProductCard from "@/app/home/categories/productCard";
 import { ModeToggle } from "@/components/themeChanger";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";

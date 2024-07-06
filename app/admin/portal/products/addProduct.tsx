@@ -47,8 +47,11 @@ import { Table, PlusCircle, Upload, PencilLine, Trash2 } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
 
-const AddProduct = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface Props {
+  onShowComponent: () => void;
+}
+
+const AddProduct = ({ onShowComponent }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -127,15 +130,14 @@ const AddProduct = () => {
     } catch (error) {
       showErrorToast();
     } finally {
-      setIsOpen(false);
       setIsLoading(false);
+      onShowComponent();
     }
   }
 
   return (
     <div className="mt-6 pr-3">
       <Form {...form}>
-        {/* <form onSubmit={form.handleSubmit(onSubmit)}> */}
         <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
           <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
             <Card x-chunk="dashboard-07-chunk-0">
@@ -154,6 +156,7 @@ const AddProduct = () => {
                           <FormLabel>Product name</FormLabel>
                           <FormControl>
                             <Input
+                              disabled={isLoading}
                               className="w-full"
                               placeholder="Enter product name"
                               {...field}
@@ -183,6 +186,7 @@ const AddProduct = () => {
                           <FormLabel>product stock</FormLabel>
                           <FormControl>
                             <Input
+                              disabled={isLoading}
                               type="number"
                               placeholder="Enter product stock"
                               {...field}
@@ -208,6 +212,7 @@ const AddProduct = () => {
                           <FormControl>
                             <Input
                               type="number"
+                              disabled={isLoading}
                               placeholder="Enter product price"
                               {...field}
                               onChange={(e) => {
@@ -243,7 +248,7 @@ const AddProduct = () => {
                             defaultValue={field.value}
                           >
                             <FormControl>
-                              <SelectTrigger>
+                              <SelectTrigger disabled={isLoading}>
                                 <SelectValue placeholder="Select category" />
                               </SelectTrigger>
                             </FormControl>
@@ -274,7 +279,7 @@ const AddProduct = () => {
                             defaultValue={field.value}
                           >
                             <FormControl>
-                              <SelectTrigger>
+                              <SelectTrigger disabled={isLoading}>
                                 <SelectValue placeholder="Select status" />
                               </SelectTrigger>
                             </FormControl>
@@ -320,6 +325,7 @@ const AddProduct = () => {
                           variant="outline"
                           size="icon"
                           onClick={handleImageDelete}
+                          disabled={isLoading}
                         >
                           <Trash2 className="text-red-500 size-5" />
                         </Button>
@@ -363,9 +369,10 @@ const AddProduct = () => {
               <Button
                 size="lg"
                 className="w-full"
+                disabled={isLoading}
                 onClick={() => form.handleSubmit(onSubmit)()}
               >
-                Save Product
+                {isLoading ? "Submitting..." : "Save Product"}
               </Button>
             </div>
           </div>

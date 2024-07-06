@@ -1,25 +1,12 @@
-import { useState } from "react";
-import { columns } from "./columns";
-import { getProducts } from "./actions";
-import AddProduct from "./addProduct";
-import DataTable from "@/components/dataTable";
+import { getAllProducts } from "./actions";
+import Table from "./table";
 
 const Page = async () => {
-  const data = await getProducts();
+  const data = await getAllProducts();
 
   return (
     <div>
-      <div className="mx-auto mt-2">
-        <DataTable
-          addComponent={<AddProduct />}
-          addButton={true}
-          searchTerm="name"
-          placeholder="Search product name..."
-          title="Product list"
-          columns={columns}
-          data={data}
-        />
-      </div>
+      <Table data={data} />
     </div>
   );
 };

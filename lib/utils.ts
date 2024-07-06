@@ -69,6 +69,18 @@ export function showErrorToast() {
   });
 }
 
+export function enumArrayToValueLabelArray(
+  enumValues: string[]
+): { value: string; label: string }[] {
+  return enumValues.map((enumValue) => ({
+    value: enumValue,
+    label: enumValue
+      .toLowerCase()
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase()),
+  }));
+}
+
 export function enumToValueLabelArray<T extends Record<string, string>>(
   enumObject: T
 ): { value: T[keyof T]; label: string }[] {
@@ -77,4 +89,23 @@ export function enumToValueLabelArray<T extends Record<string, string>>(
     label: key.toLowerCase().replace(/_/g, " "),
     // .replace(/\b\w/g, (char) => char.toUpperCase()),
   }));
+}
+
+export function enumToString(enumValues: string[]): string[] {
+  return enumValues.map((enumValue) =>
+    enumValue
+      .toLowerCase()
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase())
+  );
+}
+
+export function createBlob(file: string, type: string): Blob {
+  const fileBytes = atob(file);
+  const bytes = new Uint8Array(fileBytes.length);
+  for (let i = 0; i < fileBytes.length; i++) {
+    bytes[i] = fileBytes.charCodeAt(i);
+  }
+  const blob = new Blob([bytes.buffer], { type: type });
+  return blob;
 }

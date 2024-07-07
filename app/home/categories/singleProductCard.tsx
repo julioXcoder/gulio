@@ -16,10 +16,10 @@ type Image = { src: string; alt: string };
 
 interface Props {
   item: ProductData;
-  onProductSelect: (id: number) => void;
+  onAddToCart: (id: number) => Promise<void>;
 }
 
-const SingleProductCard = ({ item, onProductSelect }: Props) => {
+const SingleProductCard = ({ item, onAddToCart }: Props) => {
   let file = item.productImagesData[0].fileData;
   let type = item.productImagesData[0].fileType;
   let blobUrl = undefined;
@@ -53,7 +53,11 @@ const SingleProductCard = ({ item, onProductSelect }: Props) => {
             <Button size="icon" variant="outline">
               <Heart className="size-4 shrink-0 text-red-500" />
             </Button>
-            <Button size="icon" variant="outline">
+            <Button
+              size="icon"
+              variant="outline"
+              onClick={() => onAddToCart(item.id)}
+            >
               <ShoppingCart className="size-4 shrink-0" />
             </Button>
           </div>

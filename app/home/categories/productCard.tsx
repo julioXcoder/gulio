@@ -16,10 +16,10 @@ type Image = { src: string; alt: string };
 
 interface Props {
   item: ProductData;
-  onProductSelect: (id: number) => void;
+  onAddToCart: (id: number) => Promise<void>;
 }
 
-const ProductCard = ({ item, onProductSelect }: Props) => {
+const ProductCard = ({ item, onAddToCart }: Props) => {
   return (
     <div className="m-4 cursor-pointer">
       <Carousel className="group relative w-full max-w-xs">
@@ -70,7 +70,7 @@ const ProductCard = ({ item, onProductSelect }: Props) => {
           <Button
             size="icon"
             variant="outline"
-            onClick={() => onProductSelect(item.id)}
+            onClick={() => onAddToCart(item.id)}
           >
             <ShoppingCart className="size-4 shrink-0" />
           </Button>

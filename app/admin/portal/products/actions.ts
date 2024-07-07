@@ -1,6 +1,7 @@
 "use server";
 
 import { getMimeType } from "@/lib/utils";
+import { storageDir } from "@/constants";
 import {
   createReadStream,
   createWriteStream,
@@ -15,7 +16,6 @@ import prisma from "@/prisma/db";
 import { revalidatePath } from "next/cache";
 
 const pipe = promisify(pipeline);
-const storageDir = "D:\\gulio-files\\products";
 
 interface FilePath {
   storageDir: string;

@@ -1,17 +1,14 @@
 "use server";
 
 import { getMimeType } from "@/lib/utils";
-import {
-  createReadStream,
-  createWriteStream,
-  promises as fsPromises,
-} from "fs";
-import { join, extname } from "path";
+import prisma from "@/prisma/db";
+import { CartItem } from "@prisma/client";
+import { createReadStream, promises as fsPromises } from "fs";
+import { revalidatePath } from "next/cache";
+import { join } from "path";
 import { pipeline } from "stream";
 import { promisify } from "util";
-import { z } from "zod";
-import prisma from "@/prisma/db";
-import { revalidatePath } from "next/cache";
+import { getUserInfo } from "../actions";
 
 const pipe = promisify(pipeline);
 const storageDir = "D:\\gulio-files\\products";
@@ -103,4 +100,81 @@ export const getAllProducts = async () => {
   const categories = Array.from(categoriesSet);
 
   return { data, categories };
+};
+
+export const addToCart = async (productId: number) => {
+  try {
+    const user = await getUserInfo();
+
+    const cartId = user.Cart?.id;
+
+    if (!cartId) {
+      throw new Error();
+    }
+
+    await prisma.cartItem.create({
+      data: {
+        cartId,
+        productId,
+      },
+    });
+
+    revalidatePath("/home");
+  } catch (error) {
+    throw new Error();
+  }
+};
+
+export const deleteCartItem = async (id: number) => {
+  await prisma.cartItem.delete({
+    where: {
+      id,
+    },
+  });
+  revalidatePath("/home");
+};
+
+const updateProductStock = async (id: number, quantity: number) => {
+  await prisma.product.update({
+    where: {
+      id,
+    },
+    data: {
+      inStock: {
+        decrement: quantity, // Use decrement to properly reduce the stock
+      },
+    },
+  });
+};
+
+export const addOrder = async (data: CartItem[], total: number) => {
+  try {
+    const user = await getUserInfo();
+
+    const order = await prisma.order.create({
+      data: {
+        userId: user.username,
+        total,
+      },
+    });
+
+    const orderPromises = data.map(async (item) => {
+      await prisma.orderItem.create({
+        data: {
+          quantity: item.quantity,
+          orderId: order.id,
+          productId: item.productId,
+        },
+      });
+
+      await deleteCartItem(item.id);
+      await updateProductStock(item.productId, item.quantity);
+    });
+
+    await Promise.all(orderPromises);
+    revalidatePath("/home");
+  } catch (error) {
+    console.error("Error adding order:", error);
+    throw error; // Re-throw the error after logging it
+  }
 };

@@ -6,17 +6,14 @@ import { Heart, ShoppingCart } from "lucide-react";
 
 interface Props {
   products: ProductData[];
-  handleSelectedProduct: (id: number) => void;
+  onAddToCart: (id: number) => Promise<void>;
 }
 
-const FilteredProducts = ({ products, handleSelectedProduct }: Props) => {
+const FilteredProducts = ({ products, onAddToCart }: Props) => {
   return (
     <div>
       {products.map((product) => (
-        <SingleProductCard
-          onProductSelect={handleSelectedProduct}
-          item={product}
-        />
+        <SingleProductCard onAddToCart={onAddToCart} item={product} />
       ))}
     </div>
   );

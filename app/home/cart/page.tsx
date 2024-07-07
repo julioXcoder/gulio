@@ -1,12 +1,13 @@
 import { getAllProducts } from "@/app/admin/portal/products/actions";
 import CartContainer from "./cartContainer";
+import { getUserInfo } from "../actions";
 
 const Page = async () => {
-  const products = await getAllProducts();
+  const { cartItems, location } = await getUserInfo();
 
   return (
     <div className="px-5">
-      <CartContainer items={products} />
+      <CartContainer location={location} items={cartItems} />
     </div>
   );
 };

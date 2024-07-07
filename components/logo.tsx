@@ -5,7 +5,7 @@ import logo from "@/public/gulioLogo.png";
 const Logo = () => {
   return (
     <Link
-      href="#"
+      href="/"
       className="inline-flex items-center gap-x-2 font-semibold lg:text-xl dark:text-white"
     >
       <Image

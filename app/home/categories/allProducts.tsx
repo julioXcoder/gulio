@@ -11,10 +11,10 @@ import { ProductData } from "./data";
 
 interface Props {
   products: ProductData[];
-  handleSelectedProduct: (id: number) => void;
+  onAddToCart: (id: number) => Promise<void>;
 }
 
-const AllProducts = ({ handleSelectedProduct, products }: Props) => {
+const AllProducts = ({ onAddToCart, products }: Props) => {
   return (
     <>
       <div className="w-full flex px-20 justify-center items-center">
@@ -32,7 +32,7 @@ const AllProducts = ({ handleSelectedProduct, products }: Props) => {
                     <ProductCard
                       key={index}
                       item={item}
-                      onProductSelect={handleSelectedProduct}
+                      onAddToCart={onAddToCart}
                     />
                   </Card>
                 </div>

@@ -1,4 +1,4 @@
-const locations = [
+const LOCATIONS = [
   { name: "Iyunga", distance: 5, transportFee: 2800 },
   { name: "Mafiati", distance: 3, transportFee: 2600 },
   { name: "Forest", distance: 4, transportFee: 2700 },
@@ -51,3 +51,7 @@ const locations = [
   { name: "Kiwira", distance: 10, transportFee: 3300 },
   { name: "Rungwe", distance: 20, transportFee: 4300 },
 ];
+
+const storageDir = "D:\\gulio-files\\products";
+
+export { LOCATIONS, storageDir };
